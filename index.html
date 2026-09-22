@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Universo de Flores Amarillas 🌻</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: Georgia, "Times New Roman", serif;
+            background: #000;
+        }
+
+        body {
+            position: relative;
+            background:
+                radial-gradient(
+                    ellipse at center,
+                    #16120a 0%,
+                    #080806 35%,
+                    #020204 70%,
+                    #000000 100%
+                );
+        }
+
+
+        /* =====================================================
+           ESTRELLAS
+        ===================================================== */
+
+        #stars {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            border-radius: 50%;
+            background: white;
+
+            box-shadow:
+                0 0 4px white,
+                0 0 8px rgba(255,255,255,.7);
+
+            animation:
+                twinkle var(--duration) ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+
+            0% {
+                opacity: .15;
+                transform: scale(.5);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.5);
+            }
+
+            100% {
+                opacity: .15;
+                transform: scale(.5);
+            }
+        }
+
+
+        /* =====================================================
+           NEBULOSA
+        ===================================================== */
+
+        .nebula {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+
+            border-radius: 50%;
+
+            filter: blur(100px);
+
+            opacity: .13;
+
+            pointer-events: none;
+
+            z-index: 0;
+        }
+
+        .nebula.one {
+            background: #ffd000;
+            left: 50%;
+            top: 35%;
+            transform: translate(-50%, -50%);
+        }
+
+        .nebula.two {
+            background: #ff9d00;
+            left: -250px;
+            top: 20%;
+        }
+
+        .nebula.three {
+            background: #d88a00;
+            right: -250px;
+            bottom: -150px;
+        }
+
+
+        /* =====================================================
+           SOL / NÚCLEO CENTRAL
+        ===================================================== */
+
+        .sun-core {
+
+            position: fixed;
+
+            width: 210px;
+            height: 210px;
+
+            left: 50%;
+            top: 50%;
+
+            transform: translate(-50%, -50%);
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    #fffde7 0%,
+                    #fff176 18%,
+                    #ffd600 40%,
+                    #ffb300 55%,
+                    rgba(255,179,0,.25) 70%,
+                    transparent 72%
+                );
+
+            box-shadow:
+                0 0 25px #ffd600,
+                0 0 70px rgba(255,193,7,.8),
+                0 0 140px rgba(255,193,7,.4);
+
+            z-index: 3;
+
+            opacity: 0;
+
+            transition: 2s ease;
+        }
+
+        .sun-core.active {
+            opacity: 1;
+        }
+
+
+        /* =====================================================
+           ANILLOS DEL UNIVERSO
+        ===================================================== */
+
+        .ring {
+
+            position: fixed;
+
+            left: 50%;
+            top: 50%;
+
+            border-radius: 50%;
+
+            border: 2px solid rgba(255, 214, 0, .16);
+
+            transform:
+                translate(-50%, -50%)
+                rotateX(70deg);
+
+            pointer-events: none;
+
+            z-index: 2;
+
+            opacity: 0;
+
+            transition: 2s ease;
+        }
+
+        .ring.active {
+            opacity: 1;
+        }
+
+        .ring.one {
+            width: 550px;
+            height: 550px;
+
+            animation:
+                ringRotate 18s linear infinite;
+        }
+
+        .ring.two {
+            width: 800px;
+            height: 800px;
+
+            animation:
+                ringRotate 30s linear infinite reverse;
+        }
+
+        @keyframes ringRotate {
+
+            from {
+                transform:
+                    translate(-50%, -50%)
+                    rotateX(70deg)
+                    rotateZ(0deg);
+            }
+
+            to {
+                transform:
+                    translate(-50%, -50%)
+                    rotateX(70deg)
+                    rotateZ(360deg);
+            }
+        }
+
+
+        /* =====================================================
+           UNIVERSO DE FLORES
+        ===================================================== */
+
+        #flowerUniverse {
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 8;
+
+            perspective: 900px;
+
+            pointer-events: none;
+        }
+
+
+        /* =====================================================
+           GIRASOL
+        ===================================================== */
+
+        .sunflower {
+
+            position: absolute;
+
+            width: var(--size);
+            height: var(--size);
+
+            left: var(--x);
+            top: var(--y);
+
+            transform:
+                translate(-50%, -50%)
+                translateZ(var(--depth))
+                rotate(var(--rotation))
+                scale(var(--scale));
+
+            opacity: 0;
+
+            transition:
+                opacity 1.5s ease;
+
+            filter:
+                drop-shadow(0 0 8px rgba(255,193,7,.8))
+                drop-shadow(0 0 22px rgba(255,193,7,.35));
+
+            animation:
+                floating var(--float-time) ease-in-out infinite alternate;
+        }
+
+
+        .sunflower.visible {
+            opacity: 1;
+        }
+
+
+        /* PÉTALOS */
+
+        .petals {
+
+            position: absolute;
+
+            width: 100%;
+            height: 100%;
+
+            left: 0;
+            top: 0;
+
+            animation:
+                flowerSpin 25s linear infinite;
+        }
+
+        .petal {
+
+            position: absolute;
+
+            width: 24%;
+            height: 45%;
+
+            left: 38%;
+            top: 5%;
+
+            border-radius:
+                50%
+                50%
+                45%
+                45%;
+
+            background:
+                radial-gradient(
+                    ellipse at 50% 30%,
+                    #fff176 0%,
+                    #ffd600 35%,
+                    #ffb300 70%,
+                    #f57c00 100%
+                );
+
+            transform-origin:
+                50% 100%;
+
+            box-shadow:
+                0 0 4px rgba(255,193,7,.7);
+        }
+
+
+        /* 12 pétalos */
+
+        .petal:nth-child(1)  { transform: rotate(0deg); }
+        .petal:nth-child(2)  { transform: rotate(30deg); }
+        .petal:nth-child(3)  { transform: rotate(60deg); }
+        .petal:nth-child(4)  { transform: rotate(90deg); }
+        .petal:nth-child(5)  { transform: rotate(120deg); }
+        .petal:nth-child(6)  { transform: rotate(150deg); }
+        .petal:nth-child(7)  { transform: rotate(180deg); }
+        .petal:nth-child(8)  { transform: rotate(210deg); }
+        .petal:nth-child(9)  { transform: rotate(240deg); }
+        .petal:nth-child(10) { transform: rotate(270deg); }
+        .petal:nth-child(11) { transform: rotate(300deg); }
+        .petal:nth-child(12) { transform: rotate(330deg); }
+
+
+        /* CENTRO */
+
+        .flower-center {
+
+            position: absolute;
+
+            width: 38%;
+            height: 38%;
+
+            left: 31%;
+            top: 31%;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle at 40% 35%,
+                    #8d5a12,
+                    #4e2d08 45%,
+                    #1f1204 100%
+                );
+
+            box-shadow:
+                inset 0 0 12px #1b0d00,
+                0 0 5px rgba(255,193,7,.6);
+
+            z-index: 10;
+        }
+
+
+        /* PEQUEÑAS SEMILLAS DEL CENTRO */
+
+        .flower-center::after {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 15%;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    #dca52b 0 2px,
+                    transparent 3px
+                );
+
+            background-size: 9px 9px;
+
+            opacity: .6;
+        }
+
+
+        @keyframes flowerSpin {
+
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+
+        @keyframes floating {
+
+            0% {
+                margin-top: -10px;
+            }
+
+            100% {
+                margin-top: 10px;
+            }
+        }
+
+
+        /* =====================================================
+           FLORES LEJANAS
+        ===================================================== */
+
+        .background-flower {
+
+            position: absolute;
+
+            width: var(--size);
+
+            height: var(--size);
+
+            left: var(--x);
+
+            top: var(--y);
+
+            transform:
+                translate(-50%, -50%)
+                scale(var(--scale));
+
+            opacity: .8;
+
+            filter:
+                blur(var(--blur))
+                drop-shadow(0 0 5px #ffc107);
+        }
+
+
+        /* =====================================================
+           TEXTO CENTRAL
+        ===================================================== */
+
+        .message {
+
+            position: fixed;
+
+            left: 50%;
+            top: 50%;
+
+            transform:
+                translate(-50%, -50%);
+
+            width: min(700px, 90%);
+
+            text-align: center;
+
+            z-index: 50;
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            transition:
+                opacity 2s ease,
+                transform 2s ease;
+        }
+
+        .message.active {
+
+            opacity: 1;
+
+            transform:
+                translate(-50%, -50%)
+                scale(1);
+        }
+
+        .message h1 {
+
+            font-size:
+                clamp(2rem, 5vw, 4.5rem);
+
+            color: #fff9c4;
+
+            line-height: 1.1;
+
+            text-shadow:
+                0 0 8px #fff176,
+                0 0 20px #ffc107,
+                0 0 40px #ff9800,
+                0 0 80px rgba(255,193,7,.8);
+
+            animation:
+                textGlow 3s ease-in-out infinite alternate;
+        }
+
+        .message p {
+
+            margin-top: 25px;
+
+            color: white;
+
+            font-size:
+                clamp(1rem, 2.5vw, 1.5rem);
+
+            line-height: 1.7;
+
+            text-shadow:
+                0 0 8px black,
+                0 0 12px black,
+                0 0 5px #ffc107;
+        }
+
+        @keyframes textGlow {
+
+            from {
+                filter: brightness(.9);
+            }
+
+            to {
+                filter: brightness(1.3);
+            }
+        }
+
+
+        /* =====================================================
+           BOTÓN
+        ===================================================== */
+
+        #startButton {
+
+            position: fixed;
+
+            left: 50%;
+            top: 50%;
+
+            transform:
+                translate(-50%, -50%);
+
+            z-index: 100;
+
+            padding:
+                20px 40px;
+
+            border: none;
+
+            border-radius: 50px;
+
+            font-size: 1.2rem;
+
+            font-weight: bold;
+
+            color: #3e2600;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff176,
+                    #ffd600,
+                    #ffb300
+                );
+
+            cursor: pointer;
+
+            box-shadow:
+                0 0 20px rgba(255,214,0,.8),
+                0 0 50px rgba(255,193,7,.5);
+
+            transition:
+                .4s ease;
+        }
+
+        #startButton:hover {
+
+            transform:
+                translate(-50%, -50%)
+                scale(1.08);
+
+            box-shadow:
+                0 0 30px #fff176,
+                0 0 80px #ffc107;
+        }
+
+        #startButton.hide {
+
+            opacity: 0;
+
+            transform:
+                translate(-50%, -50%)
+                scale(2);
+
+            pointer-events: none;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media(max-width:600px) {
+
+            .sun-core {
+
+                width: 130px;
+                height: 130px;
+            }
+
+            .ring.one {
+
+                width: 350px;
+                height: 350px;
+            }
+
+            .ring.two {
+
+                width: 500px;
+                height: 500px;
+            }
+
+            #startButton {
+
+                width: 80%;
+
+                padding: 17px 20px;
+
+                font-size: 1rem;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NEBULOSAS -->
+
+    <div class="nebula one"></div>
+    <div class="nebula two"></div>
+    <div class="nebula three"></div>
+
+
+    <!-- ESTRELLAS -->
+
+    <div id="stars"></div>
+
+
+    <!-- ANILLOS -->
+
+    <div class="ring one"></div>
+    <div class="ring two"></div>
+
+
+    <!-- SOL CENTRAL -->
+
+    <div class="sun-core"></div>
+
+
+    <!-- UNIVERSO DE FLORES -->
+
+    <div id="flowerUniverse"></div>
+
+
+    <!-- MENSAJE -->
+
+    <div class="message" id="message">
+
+        <h1>
+            Feliz día de las<br>
+            flores amarillas 🌻
+        </h1>
+
+        <p>
+            Amarillas como el sol,<br>
+            porque tú tienes esa forma de iluminar mis días. ✨
+        </p>
+
+    </div>
+
+
+    <!-- BOTÓN -->
+
+    <button id="startButton">
+        🌻 Abrir mi universo 🌻
+    </button>
+
+
+    <!-- MÚSICA -->
+
+    <audio id="music" loop>
+
+        <source
+            src="floricienta.mp3"
+            type="audio/mpeg">
+
+    </audio>
+
+
+    <script>
+
+
+        /* =====================================================
+           ELEMENTOS
+        ===================================================== */
+
+        const stars =
+            document.getElementById("stars");
+
+        const universe =
+            document.getElementById("flowerUniverse");
+
+        const button =
+            document.getElementById("startButton");
+
+        const message =
+            document.getElementById("message");
+
+        const sun =
+            document.querySelector(".sun-core");
+
+        const rings =
+            document.querySelectorAll(".ring");
+
+        const music =
+            document.getElementById("music");
+
+
+        /* =====================================================
+           ESTRELLAS
+        ===================================================== */
+
+        function createStars() {
+
+            for (
+                let i = 0;
+                i < 280;
+                i++
+            ) {
+
+                const star =
+                    document.createElement("div");
+
+                star.className =
+                    "star";
+
+                const size =
+                    Math.random() * 2.8 + .5;
+
+                star.style.width =
+                    size + "px";
+
+                star.style.height =
+                    size + "px";
+
+                star.style.left =
+                    Math.random() * 100 + "vw";
+
+                star.style.top =
+                    Math.random() * 100 + "vh";
+
+                star.style.setProperty(
+                    "--duration",
+                    Math.random() * 4 + 2 + "s"
+                );
+
+                stars.appendChild(star);
+            }
+        }
+
+
+        /* =====================================================
+           CREAR GIRASOL
+        ===================================================== */
+
+        function createSunflower(
+            x,
+            y,
+            size,
+            scale,
+            depth,
+            rotation,
+            delay
+        ) {
+
+            const flower =
+                document.createElement("div");
+
+            flower.className =
+                "sunflower";
+
+
+            flower.style.setProperty(
+                "--x",
+                x + "%"
+            );
+
+            flower.style.setProperty(
+                "--y",
+                y + "%"
+            );
+
+            flower.style.setProperty(
+                "--size",
+                size + "px"
+            );
+
+            flower.style.setProperty(
+                "--scale",
+                scale
+            );
+
+            flower.style.setProperty(
+                "--depth",
+                depth + "px"
+            );
+
+            flower.style.setProperty(
+                "--rotation",
+                rotation + "deg"
+            );
+
+            flower.style.setProperty(
+                "--float-time",
+                (Math.random() * 4 + 3) + "s"
+            );
+
+
+            /* pétalos */
+
+            const petals =
+                document.createElement("div");
+
+            petals.className =
+                "petals";
+
+
+            for (
+                let i = 0;
+                i < 12;
+                i++
+            ) {
+
+                const petal =
+                    document.createElement("div");
+
+                petal.className =
+                    "petal";
+
+                petals.appendChild(petal);
+            }
+
+
+            /* centro */
+
+            const center =
+                document.createElement("div");
+
+            center.className =
+                "flower-center";
+
+
+            flower.appendChild(petals);
+
+            flower.appendChild(center);
+
+            universe.appendChild(flower);
+
+
+            setTimeout(() => {
+
+                flower.classList.add(
+                    "visible"
+                );
+
+            }, delay);
+        }
+
+
+        /* =====================================================
+           CREAR UNIVERSO DE GIRASOLES
+        ===================================================== */
+
+        function createUniverse() {
+
+            /*
+                FLORES DEL FONDO
+                Pequeñas y numerosas
+            */
+
+            for (
+                let i = 0;
+                i < 65;
+                i++
+            ) {
+
+                createSunflower(
+
+                    Math.random() * 120 - 10,
+
+                    Math.random() * 100,
+
+                    Math.random() * 30 + 22,
+
+                    Math.random() * .6 + .35,
+
+                    -300,
+
+                    Math.random() * 360,
+
+                    Math.random() * 2500
+                );
+            }
+
+
+            /*
+                FLORES MEDIANAS
+            */
+
+            for (
+                let i = 0;
+                i < 35;
+                i++
+            ) {
+
+                createSunflower(
+
+                    Math.random() * 115 - 7,
+
+                    Math.random() * 100,
+
+                    Math.random() * 45 + 40,
+
+                    Math.random() * .5 + .7,
+
+                    -100,
+
+                    Math.random() * 360,
+
+                    Math.random() * 3000
+                );
+            }
+
+
+            /*
+                FLORES GRANDES
+                Primer plano
+            */
+
+            for (
+                let i = 0;
+                i < 18;
+                i++
+            ) {
+
+                createSunflower(
+
+                    Math.random() * 120 - 10,
+
+                    Math.random() * 115 - 5,
+
+                    Math.random() * 80 + 75,
+
+                    Math.random() * .5 + 1,
+
+                    100,
+
+                    Math.random() * 360,
+
+                    Math.random() * 4000
+                );
+            }
+        }
+
+
+        /* =====================================================
+           INICIAR
+        ===================================================== */
+
+        createStars();
+
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                /* ocultar botón */
+
+                button.classList.add(
+                    "hide"
+                );
+
+
+                /* activar núcleo */
+
+                sun.classList.add(
+                    "active"
+                );
+
+
+                /* activar órbitas */
+
+                rings.forEach(
+                    ring =>
+                        ring.classList.add(
+                            "active"
+                        )
+                );
+
+
+                /* crear flores */
+
+                createUniverse();
+
+
+                /* mostrar mensaje */
+
+                setTimeout(() => {
+
+                    message.classList.add(
+                        "active"
+                    );
+
+                }, 2500);
+
+
+                /* música */
+
+                music.play().catch(
+                    error => {
+
+                        console.log(
+                            "No se pudo reproducir la música:",
+                            error
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
